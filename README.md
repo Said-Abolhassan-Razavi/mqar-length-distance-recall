@@ -7,8 +7,9 @@ A small reproduction and controlled extension of
 **Question:** if a model learns multi-query associative recall (MQAR) on sequences of length 64,
 does recall still work at longer lengths, and at key-to-query distances it never saw in training?
 
-**Answer so far (one seed):** Attention and Based keep their accuracy. BaseConv loses accuracy,
-and the loss comes entirely from keys further back than its filter can reach.
+**Answer so far (3 seeds for the plotted models):** Attention and Based keep their accuracy.
+BaseConv loses accuracy, and the loss comes entirely from keys further back than its filter can
+reach. BaseConv's training also varies widely between seeds, from 39% to 94% at length 64.
 
 This repo holds only my experiment code, a small patch and my results. The models and task
 come from the [Zoology repository](https://github.com/HazyResearch/zoology), which you need to
@@ -19,7 +20,8 @@ run anything here.
 ![Accuracy against test length](results/length_generalization.png)
 
 All models were trained at length 64 and tested without retraining, with 4 key-value pairs at
-every length. Each row is the model's best run, chosen by accuracy at length 64 only.
+every length. The plot and the tables marked "seed 123" show each model's best run from the sweep,
+chosen by accuracy at length 64 only.
 
 | Model | Width | Length 64 | Length 128 | Length 256 |
 |---|---|---|---|---|
@@ -27,10 +29,31 @@ every length. Each row is the model's best run, chosen by accuracy at length 64 
 | Based | 64 | 99.52% | 99.52% | 99.48% |
 | BaseConv | 128 | 93.89% | 77.90% | 66.97% |
 
+### Across seeds
+
+I repeated those three runs with two new seeds, changing both the starting weights and the
+training data. Seed 123 was chosen as the best run and the new seeds were not, so seed 123 is
+likely to look slightly better. Each cell shows seeds 123 / 124 / 125.
+
+| Model | Length 64 | Length 128 | Length 256 |
+|---|---|---|---|
+| Attention | 99.99 / 99.94 / 99.97% | 99.98 / 99.96 / 99.95% | 99.98 / 99.99 / 99.98% |
+| Based | 99.52 / 99.50 / 99.08% | 99.52 / 99.58 / 99.17% | 99.48 / 99.51 / 99.16% |
+| BaseConv | 93.89 / 90.95 / 39.28% | 77.90 / 75.86 / 33.25% | 66.97 / 64.64 / 29.12% |
+
+Attention and Based barely change between seeds. BaseConv seed 125 ran normally but levelled off
+near 40% validation accuracy, so a single BaseConv number says little on its own.
+
+BaseConv's drop has the same shape in all three seeds. At length 256, 71.5% of the test queries
+have a distance of 64 or less, and each seed keeps 71-74% of its length 64 accuracy. At length 128
+that share is 83.3%, and each seed keeps 83-85%.
+
 ### Accuracy by distance
 
-Distance is the query position minus the position of its matching key. These are the same runs
-at test length 256. Distances above 64 never occur in training.
+Distance is the query position minus the position of its matching key. This table is seed 123 at
+test length 256. Distances above 64 never occur in training. Across all three seeds and both longer
+test lengths, BaseConv is 0.00% in every bin above 64, Attention is at least 99.86%, and Based is
+at least 98.04%.
 
 | Distance | Attention | Based | BaseConv |
 |---|---|---|---|
@@ -52,17 +75,18 @@ work at distances they were never trained on.
 ### More key-value pairs
 
 With the paper's pairing of 8 pairs at length 128 and 16 pairs at length 256, length and task
-difficulty change together, so these numbers are not a pure length test.
+difficulty change together, so these numbers are not a pure length test. Each cell shows the mean
+of 3 seeds, then the lowest and highest seed.
 
 | Model | 4 pairs, length 64 | 8 pairs, length 128 | 16 pairs, length 256 |
 |---|---|---|---|
-| Attention | 99.99% | 99.96% | 99.88% |
-| Based | 99.52% | 98.04% | 90.43% |
-| BaseConv | 93.89% | 43.62% | 11.98% |
+| Attention | 99.97% (99.94-99.99) | 99.93% (99.91-99.96) | 99.88% (99.83-99.92) |
+| Based | 99.37% (99.08-99.52) | 97.47% (96.42-98.04) | 88.71% (85.30-90.43) |
+| BaseConv | 74.71% (39.28-93.89) | 33.25% (15.87-43.62) | 9.22% (4.80-11.98) |
 
 ### Reproduction
 
-Best validation accuracy over the two learning rates, at the end of training:
+Best validation accuracy over the two learning rates, at the end of training (seed 123):
 
 | Model | L64, d64 | L64, d128 | L128, d64 | L128, d128 |
 |---|---|---|---|---|
@@ -72,11 +96,13 @@ Best validation accuracy over the two learning rates, at the end of training:
 
 Attention and Based match the paper's pattern. **BaseConv does not fully reproduce:** at length
 128 and width 64 it reached about 10%, against roughly 37% read from the paper's Figure 2.
-I have not found the cause yet.
+I have not found the cause yet. Seed variation is one candidate, given the spread above, but I
+have only repeated seeds at length 64.
 
 ## Limits
 
-- Every number comes from one seed, so there are no error bars yet.
+- Only the three plotted length 64 runs have 3 seeds. All other runs have one seed, and 3 seeds
+  is still too few for a reliable estimate of BaseConv's spread.
 - The setup is smaller than the paper's: 2 of 4 learning rates, batch size 256 at length 128 to
   fit an 8 GB GPU, and at most 64 epochs. BaseConv used all 64 epochs, so it may not have converged.
 - The data uses the repository's default power-law setting (0.01), while the paper's text reports
@@ -111,6 +137,9 @@ python -m zoology.launch zoology/experiments/zoology_repro/configs.py
 python -m zoology.experiments.zoology_repro.evaluate_length
 python -m zoology.experiments.zoology_repro.evaluate_distance
 python -m zoology.experiments.zoology_repro.plot
+
+python -m zoology.launch zoology/experiments/zoology_repro/seeds.py
+python -m zoology.experiments.zoology_repro.seeds
 ```
 
 Results are written to `results/zoology_repro/` in the Zoology folder. Finished runs are skipped,
@@ -129,6 +158,8 @@ The patch makes two changes:
 - `results/length_generalization.csv`: accuracy per run, test length and number of pairs
 - `results/distance_accuracy.csv`: accuracy per run, test length and distance bin
 - `results/plotted_runs.csv`: the runs chosen for the plot
+- `results/seed_length.csv`, `results/seed_distance.csv`: the same tests for every seed
+- `results/seed_length_summary.csv`, `results/seed_distance_summary.csv`: mean, spread and range
 
 ## Credits
 
