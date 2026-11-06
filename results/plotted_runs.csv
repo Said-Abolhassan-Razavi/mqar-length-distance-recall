@@ -1,0 +1,4 @@
+model,d_model,learning_rate,valid_accuracy_at_train_length,run_id
+attention,64,0.01,0.9998333333333334,attention-L64-d64-lr1.0e-02
+base_conv,128,0.01,0.9345,base_conv-L64-d128-lr1.0e-02
+based,64,0.01,0.9955,based-L64-d64-lr1.0e-02

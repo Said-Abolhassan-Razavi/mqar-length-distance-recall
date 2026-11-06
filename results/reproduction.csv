@@ -1,0 +1,25 @@
+model,train_length,d_model,learning_rate,final_valid_accuracy,best_valid_accuracy,epochs_run,num_parameters,state_size,run_id,note
+attention,64,64,0.002154434690031882,0.9996666666666667,0.9996666666666667,2,545984,33536,attention-L64-d64-lr2.2e-03,
+attention,64,64,0.01,0.9998333333333334,0.9998333333333334,1,545984,33536,attention-L64-d64-lr1.0e-02,
+base_conv,64,64,0.002154434690031882,0.4475,0.4475,64,534656,17152,base_conv-L64-d64-lr2.2e-03,"BaseConv's long filter only covers the training length (64), so at longer test lengths it sees at most about that many tokens back (65 with its short convolution)."
+base_conv,64,64,0.01,0.5555,0.5559166666666666,64,534656,17152,base_conv-L64-d64-lr1.0e-02,"BaseConv's long filter only covers the training length (64), so at longer test lengths it sees at most about that many tokens back (65 with its short convolution)."
+based,64,64,0.002154434690031882,0.99075,0.99075,5,538560,12468.0,based-L64-d64-lr2.2e-03,
+based,64,64,0.01,0.9955,0.9955,2,538560,12468.0,based-L64-d64-lr1.0e-02,
+attention,64,128,0.002154434690031882,0.9991666666666666,0.9991666666666666,1,1132928,67072,attention-L64-d128-lr2.2e-03,
+attention,64,128,0.01,0.99975,0.99975,1,1132928,67072,attention-L64-d128-lr1.0e-02,
+base_conv,64,128,0.002154434690031882,0.7363333333333333,0.7365833333333334,64,1085632,34304,base_conv-L64-d128-lr2.2e-03,"BaseConv's long filter only covers the training length (64), so at longer test lengths it sees at most about that many tokens back (65 with its short convolution)."
+base_conv,64,128,0.01,0.9345,0.9345833333333333,64,1085632,34304,base_conv-L64-d128-lr1.0e-02,"BaseConv's long filter only covers the training length (64), so at longer test lengths it sees at most about that many tokens back (65 with its short convolution)."
+based,64,128,0.002154434690031882,0.99525,0.99525,2,1101696,24756.0,based-L64-d128-lr2.2e-03,
+based,64,128,0.01,0.9946666666666667,0.9946666666666667,1,1101696,24756.0,based-L64-d128-lr1.0e-02,
+attention,128,64,0.002154434690031882,0.9999166666666667,0.9999166666666667,2,545984,66304,attention-L128-d64-lr2.2e-03,
+attention,128,64,0.01,0.9997083333333333,0.9997083333333333,1,545984,66304,attention-L128-d64-lr1.0e-02,
+base_conv,128,64,0.002154434690031882,0.10391666666666667,0.10645833333333334,64,534656,33536,base_conv-L128-d64-lr2.2e-03,"BaseConv's long filter only covers the training length (128), so at longer test lengths it sees at most about that many tokens back (129 with its short convolution)."
+base_conv,128,64,0.01,0.10379166666666667,0.10579166666666667,64,534656,33536,base_conv-L128-d64-lr1.0e-02,"BaseConv's long filter only covers the training length (128), so at longer test lengths it sees at most about that many tokens back (129 with its short convolution)."
+based,128,64,0.002154434690031882,0.992875,0.992875,4,538560,12468.0,based-L128-d64-lr2.2e-03,
+based,128,64,0.01,0.9942916666666667,0.9942916666666667,2,538560,12468.0,based-L128-d64-lr1.0e-02,
+attention,128,128,0.002154434690031882,1.0,1.0,2,1132928,132608,attention-L128-d128-lr2.2e-03,
+attention,128,128,0.01,0.9999583333333333,0.9999583333333333,1,1132928,132608,attention-L128-d128-lr1.0e-02,
+base_conv,128,128,0.002154434690031882,0.423625,0.4241666666666667,64,1085632,67072,base_conv-L128-d128-lr2.2e-03,"BaseConv's long filter only covers the training length (128), so at longer test lengths it sees at most about that many tokens back (129 with its short convolution)."
+base_conv,128,128,0.01,0.5137916666666666,0.5139166666666667,64,1085632,67072,base_conv-L128-d128-lr1.0e-02,"BaseConv's long filter only covers the training length (128), so at longer test lengths it sees at most about that many tokens back (129 with its short convolution)."
+based,128,128,0.002154434690031882,0.9961666666666666,0.9961666666666666,2,1101696,24756.0,based-L128-d128-lr2.2e-03,
+based,128,128,0.01,0.9908333333333333,0.9908333333333333,1,1101696,24756.0,based-L128-d128-lr1.0e-02,

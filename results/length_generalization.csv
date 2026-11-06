@@ -1,0 +1,73 @@
+model,d_model,learning_rate,kv_setting,test_length,num_kv_pairs,accuracy,valid_accuracy_at_train_length,run_id,note
+attention,64,0.002154434690031882,fixed_kv,64,4,0.99975,0.9996666666666667,attention-L64-d64-lr2.2e-03,
+attention,64,0.002154434690031882,fixed_kv,128,4,0.9996666666666667,0.9996666666666667,attention-L64-d64-lr2.2e-03,
+attention,64,0.002154434690031882,fixed_kv,256,4,0.9999166666666667,0.9996666666666667,attention-L64-d64-lr2.2e-03,
+attention,64,0.002154434690031882,scaled_kv,64,4,0.99975,0.9996666666666667,attention-L64-d64-lr2.2e-03,
+attention,64,0.002154434690031882,scaled_kv,128,8,0.9993333333333333,0.9996666666666667,attention-L64-d64-lr2.2e-03,
+attention,64,0.002154434690031882,scaled_kv,256,16,0.9986666666666667,0.9996666666666667,attention-L64-d64-lr2.2e-03,
+attention,64,0.01,fixed_kv,64,4,0.9999166666666667,0.9998333333333334,attention-L64-d64-lr1.0e-02,
+attention,64,0.01,fixed_kv,128,4,0.9998333333333334,0.9998333333333334,attention-L64-d64-lr1.0e-02,
+attention,64,0.01,fixed_kv,256,4,0.9998333333333334,0.9998333333333334,attention-L64-d64-lr1.0e-02,
+attention,64,0.01,scaled_kv,64,4,0.9999166666666667,0.9998333333333334,attention-L64-d64-lr1.0e-02,
+attention,64,0.01,scaled_kv,128,8,0.999625,0.9998333333333334,attention-L64-d64-lr1.0e-02,
+attention,64,0.01,scaled_kv,256,16,0.9987708333333334,0.9998333333333334,attention-L64-d64-lr1.0e-02,
+base_conv,64,0.002154434690031882,fixed_kv,64,4,0.45108333333333334,0.4475,base_conv-L64-d64-lr2.2e-03,
+base_conv,64,0.002154434690031882,fixed_kv,128,4,0.37133333333333335,0.4475,base_conv-L64-d64-lr2.2e-03,"BaseConv's long filter only covers the training length (64), so at longer test lengths it sees at most about that many tokens back (65 with its short convolution)."
+base_conv,64,0.002154434690031882,fixed_kv,256,4,0.32616666666666666,0.4475,base_conv-L64-d64-lr2.2e-03,"BaseConv's long filter only covers the training length (64), so at longer test lengths it sees at most about that many tokens back (65 with its short convolution)."
+base_conv,64,0.002154434690031882,scaled_kv,64,4,0.45108333333333334,0.4475,base_conv-L64-d64-lr2.2e-03,
+base_conv,64,0.002154434690031882,scaled_kv,128,8,0.11575,0.4475,base_conv-L64-d64-lr2.2e-03,"BaseConv's long filter only covers the training length (64), so at longer test lengths it sees at most about that many tokens back (65 with its short convolution)."
+base_conv,64,0.002154434690031882,scaled_kv,256,16,0.027104166666666665,0.4475,base_conv-L64-d64-lr2.2e-03,"BaseConv's long filter only covers the training length (64), so at longer test lengths it sees at most about that many tokens back (65 with its short convolution)."
+base_conv,64,0.01,fixed_kv,64,4,0.5675,0.5555,base_conv-L64-d64-lr1.0e-02,
+base_conv,64,0.01,fixed_kv,128,4,0.47191666666666665,0.5555,base_conv-L64-d64-lr1.0e-02,"BaseConv's long filter only covers the training length (64), so at longer test lengths it sees at most about that many tokens back (65 with its short convolution)."
+base_conv,64,0.01,fixed_kv,256,4,0.40291666666666665,0.5555,base_conv-L64-d64-lr1.0e-02,"BaseConv's long filter only covers the training length (64), so at longer test lengths it sees at most about that many tokens back (65 with its short convolution)."
+base_conv,64,0.01,scaled_kv,64,4,0.5675,0.5555,base_conv-L64-d64-lr1.0e-02,
+base_conv,64,0.01,scaled_kv,128,8,0.14170833333333333,0.5555,base_conv-L64-d64-lr1.0e-02,"BaseConv's long filter only covers the training length (64), so at longer test lengths it sees at most about that many tokens back (65 with its short convolution)."
+base_conv,64,0.01,scaled_kv,256,16,0.03185416666666667,0.5555,base_conv-L64-d64-lr1.0e-02,"BaseConv's long filter only covers the training length (64), so at longer test lengths it sees at most about that many tokens back (65 with its short convolution)."
+based,64,0.002154434690031882,fixed_kv,64,4,0.9905,0.99075,based-L64-d64-lr2.2e-03,
+based,64,0.002154434690031882,fixed_kv,128,4,0.9903333333333333,0.99075,based-L64-d64-lr2.2e-03,
+based,64,0.002154434690031882,fixed_kv,256,4,0.9910833333333333,0.99075,based-L64-d64-lr2.2e-03,
+based,64,0.002154434690031882,scaled_kv,64,4,0.9905,0.99075,based-L64-d64-lr2.2e-03,
+based,64,0.002154434690031882,scaled_kv,128,8,0.9574166666666667,0.99075,based-L64-d64-lr2.2e-03,
+based,64,0.002154434690031882,scaled_kv,256,16,0.8171041666666666,0.99075,based-L64-d64-lr2.2e-03,
+based,64,0.01,fixed_kv,64,4,0.99525,0.9955,based-L64-d64-lr1.0e-02,
+based,64,0.01,fixed_kv,128,4,0.99525,0.9955,based-L64-d64-lr1.0e-02,
+based,64,0.01,fixed_kv,256,4,0.99475,0.9955,based-L64-d64-lr1.0e-02,
+based,64,0.01,scaled_kv,64,4,0.99525,0.9955,based-L64-d64-lr1.0e-02,
+based,64,0.01,scaled_kv,128,8,0.9804166666666667,0.9955,based-L64-d64-lr1.0e-02,
+based,64,0.01,scaled_kv,256,16,0.9043333333333333,0.9955,based-L64-d64-lr1.0e-02,
+attention,128,0.002154434690031882,fixed_kv,64,4,0.9990833333333333,0.9991666666666666,attention-L64-d128-lr2.2e-03,
+attention,128,0.002154434690031882,fixed_kv,128,4,0.9990833333333333,0.9991666666666666,attention-L64-d128-lr2.2e-03,
+attention,128,0.002154434690031882,fixed_kv,256,4,0.9985,0.9991666666666666,attention-L64-d128-lr2.2e-03,
+attention,128,0.002154434690031882,scaled_kv,64,4,0.9990833333333333,0.9991666666666666,attention-L64-d128-lr2.2e-03,
+attention,128,0.002154434690031882,scaled_kv,128,8,0.9980833333333333,0.9991666666666666,attention-L64-d128-lr2.2e-03,
+attention,128,0.002154434690031882,scaled_kv,256,16,0.995625,0.9991666666666666,attention-L64-d128-lr2.2e-03,
+attention,128,0.01,fixed_kv,64,4,0.9999166666666667,0.99975,attention-L64-d128-lr1.0e-02,
+attention,128,0.01,fixed_kv,128,4,0.9996666666666667,0.99975,attention-L64-d128-lr1.0e-02,
+attention,128,0.01,fixed_kv,256,4,0.9996666666666667,0.99975,attention-L64-d128-lr1.0e-02,
+attention,128,0.01,scaled_kv,64,4,0.9999166666666667,0.99975,attention-L64-d128-lr1.0e-02,
+attention,128,0.01,scaled_kv,128,8,0.999625,0.99975,attention-L64-d128-lr1.0e-02,
+attention,128,0.01,scaled_kv,256,16,0.9993958333333334,0.99975,attention-L64-d128-lr1.0e-02,
+base_conv,128,0.002154434690031882,fixed_kv,64,4,0.7395,0.7363333333333333,base_conv-L64-d128-lr2.2e-03,
+base_conv,128,0.002154434690031882,fixed_kv,128,4,0.6163333333333333,0.7363333333333333,base_conv-L64-d128-lr2.2e-03,"BaseConv's long filter only covers the training length (64), so at longer test lengths it sees at most about that many tokens back (65 with its short convolution)."
+base_conv,128,0.002154434690031882,fixed_kv,256,4,0.5260833333333333,0.7363333333333333,base_conv-L64-d128-lr2.2e-03,"BaseConv's long filter only covers the training length (64), so at longer test lengths it sees at most about that many tokens back (65 with its short convolution)."
+base_conv,128,0.002154434690031882,scaled_kv,64,4,0.7395,0.7363333333333333,base_conv-L64-d128-lr2.2e-03,
+base_conv,128,0.002154434690031882,scaled_kv,128,8,0.3117083333333333,0.7363333333333333,base_conv-L64-d128-lr2.2e-03,"BaseConv's long filter only covers the training length (64), so at longer test lengths it sees at most about that many tokens back (65 with its short convolution)."
+base_conv,128,0.002154434690031882,scaled_kv,256,16,0.08016666666666666,0.7363333333333333,base_conv-L64-d128-lr2.2e-03,"BaseConv's long filter only covers the training length (64), so at longer test lengths it sees at most about that many tokens back (65 with its short convolution)."
+base_conv,128,0.01,fixed_kv,64,4,0.9389166666666666,0.9345,base_conv-L64-d128-lr1.0e-02,
+base_conv,128,0.01,fixed_kv,128,4,0.779,0.9345,base_conv-L64-d128-lr1.0e-02,"BaseConv's long filter only covers the training length (64), so at longer test lengths it sees at most about that many tokens back (65 with its short convolution)."
+base_conv,128,0.01,fixed_kv,256,4,0.6696666666666666,0.9345,base_conv-L64-d128-lr1.0e-02,"BaseConv's long filter only covers the training length (64), so at longer test lengths it sees at most about that many tokens back (65 with its short convolution)."
+base_conv,128,0.01,scaled_kv,64,4,0.9389166666666666,0.9345,base_conv-L64-d128-lr1.0e-02,
+base_conv,128,0.01,scaled_kv,128,8,0.43625,0.9345,base_conv-L64-d128-lr1.0e-02,"BaseConv's long filter only covers the training length (64), so at longer test lengths it sees at most about that many tokens back (65 with its short convolution)."
+base_conv,128,0.01,scaled_kv,256,16,0.11979166666666667,0.9345,base_conv-L64-d128-lr1.0e-02,"BaseConv's long filter only covers the training length (64), so at longer test lengths it sees at most about that many tokens back (65 with its short convolution)."
+based,128,0.002154434690031882,fixed_kv,64,4,0.9943333333333333,0.99525,based-L64-d128-lr2.2e-03,
+based,128,0.002154434690031882,fixed_kv,128,4,0.995,0.99525,based-L64-d128-lr2.2e-03,
+based,128,0.002154434690031882,fixed_kv,256,4,0.9950833333333333,0.99525,based-L64-d128-lr2.2e-03,
+based,128,0.002154434690031882,scaled_kv,64,4,0.9943333333333333,0.99525,based-L64-d128-lr2.2e-03,
+based,128,0.002154434690031882,scaled_kv,128,8,0.9834166666666667,0.99525,based-L64-d128-lr2.2e-03,
+based,128,0.002154434690031882,scaled_kv,256,16,0.9256875,0.99525,based-L64-d128-lr2.2e-03,
+based,128,0.01,fixed_kv,64,4,0.9948333333333333,0.9946666666666667,based-L64-d128-lr1.0e-02,
+based,128,0.01,fixed_kv,128,4,0.9953333333333333,0.9946666666666667,based-L64-d128-lr1.0e-02,
+based,128,0.01,fixed_kv,256,4,0.9953333333333333,0.9946666666666667,based-L64-d128-lr1.0e-02,
+based,128,0.01,scaled_kv,64,4,0.9948333333333333,0.9946666666666667,based-L64-d128-lr1.0e-02,
+based,128,0.01,scaled_kv,128,8,0.9846666666666667,0.9946666666666667,based-L64-d128-lr1.0e-02,
+based,128,0.01,scaled_kv,256,16,0.9373958333333333,0.9946666666666667,based-L64-d128-lr1.0e-02,
