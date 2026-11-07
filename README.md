@@ -96,19 +96,40 @@ Best validation accuracy over the two learning rates, at the end of training (se
 
 Attention and Based match the paper's pattern. **BaseConv does not fully reproduce:** at length
 128 and width 64 it reached about 10%, against roughly 37% read from the paper's Figure 2.
-I have not found the cause yet. Seed variation is one candidate, given the spread above, but I
-have only repeated seeds at length 64.
+
+I tested two possible causes at learning rate 1e-2
+([experiments/zoology_repro/gap.py](experiments/zoology_repro/gap.py),
+[results/gap_results.csv](results/gap_results.csv)):
+
+| Setting | Seeds | Validation accuracy |
+|---|---|---|
+| Power-law setting 0.01 (Figure 2 config) | 123, 124, 125 | 10.38%, 10.23%, 10.30% |
+| Power-law setting 0.1 (paper's text) | 123, 124 | 10.28%, 10.15% |
+
+Neither seed nor power-law setting closes the gap. All five runs fail in the same way: about 80% of
+their answers are one of the 8 values in the sequence, but they pick among those values at random.
+Dividing by 8 gives 9.9-10.1%, which matches their measured 10.1-10.6% on a shared test set. Accuracy
+is also flat across distances, so this looks like a capacity limit at width 64 rather than a
+distance limit. The width 128 run reaches 51%.
+
+Three differences remain untested: Figure 2's config uses batch size 512 at this length (too large
+for 8 GB), I used only 2 of its 4 learning rates, and the 37% value is read from the figure by eye.
 
 ## Limits
 
-- Only the three plotted length 64 runs have 3 seeds. All other runs have one seed, and 3 seeds
+- Only the three plotted length 64 runs and BaseConv at length 128, width 64 have 3 seeds. All
+  other runs have one seed, and 3 seeds
   is still too few for a reliable estimate of BaseConv's spread.
 - The setup is smaller than the paper's: 2 of 4 learning rates, batch size 256 at length 128 to
   fit an 8 GB GPU, and at most 64 epochs. BaseConv used all 64 epochs, so it may not have converged.
-- The data uses the repository's default power-law setting (0.01), while the paper's text reports
-  0.1. This is one candidate for the BaseConv gap, but I have not tested it.
-- I have not reviewed later papers, so I make no claim that this result is new. Later Zoology
-  configs also test some models at longer lengths.
+- The data uses the power-law setting from the Figure 2 config (0.01). The paper's text reports
+  0.1, which I tested only for the BaseConv gap above.
+- I make no claim that this result is new. Later Zoology configs also test some models at longer
+  lengths. [Li et al. (2024)](https://arxiv.org/abs/2407.05591) prove that attention with short
+  convolutions can solve associative recall at any length once it solves it at one length, which
+  fits the Attention result here. The Zoology paper already suggests that gated convolutions handle
+  only some key-to-query distances; the distance table above measures that directly for BaseConv.
+  I have not done a full literature review.
 
 ## Model setup
 
@@ -140,6 +161,9 @@ python -m zoology.experiments.zoology_repro.plot
 
 python -m zoology.launch zoology/experiments/zoology_repro/seeds.py
 python -m zoology.experiments.zoology_repro.seeds
+
+python -m zoology.launch zoology/experiments/zoology_repro/gap.py
+python -m zoology.experiments.zoology_repro.gap
 ```
 
 Results are written to `results/zoology_repro/` in the Zoology folder. Finished runs are skipped,
@@ -160,6 +184,7 @@ The patch makes two changes:
 - `results/plotted_runs.csv`: the runs chosen for the plot
 - `results/seed_length.csv`, `results/seed_distance.csv`: the same tests for every seed
 - `results/seed_length_summary.csv`, `results/seed_distance_summary.csv`: mean, spread and range
+- `results/gap_results.csv`: the BaseConv runs at length 128, width 64, with the answer check
 
 ## Credits
 
