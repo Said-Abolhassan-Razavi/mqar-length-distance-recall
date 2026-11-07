@@ -20,8 +20,9 @@ run anything here.
 ![Accuracy against test length](results/length_generalization.png)
 
 All models were trained at length 64 and tested without retraining, with 4 key-value pairs at
-every length. The plot and the tables marked "seed 123" show each model's best run from the sweep,
-chosen by accuracy at length 64 only.
+every length. Each model uses the settings of its best run from the sweep, chosen by accuracy at
+length 64 only. The plot shows the mean of 3 seeds, with the shaded band running from the lowest to
+the highest seed. The table below and the tables marked "seed 123" show the original best run.
 
 | Model | Width | Length 64 | Length 128 | Length 256 |
 |---|---|---|---|---|
@@ -161,6 +162,7 @@ python -m zoology.experiments.zoology_repro.plot
 
 python -m zoology.launch zoology/experiments/zoology_repro/seeds.py
 python -m zoology.experiments.zoology_repro.seeds
+python -m zoology.experiments.zoology_repro.plot
 
 python -m zoology.launch zoology/experiments/zoology_repro/gap.py
 python -m zoology.experiments.zoology_repro.gap

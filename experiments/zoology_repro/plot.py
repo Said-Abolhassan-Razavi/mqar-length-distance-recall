@@ -1,11 +1,14 @@
 """
 Plots accuracy against test length, with one line per model.
 
-Each line is the model's best length 64 run, chosen by accuracy at length 64 only, so the
-longer test lengths play no part in the choice. Ties go to the smaller width.
+Each model uses the settings of its best length 64 run, chosen by accuracy at length 64 only, so
+the longer test lengths play no part in the choice. Ties go to the smaller width.
 The number of key-value pairs is fixed at 4, so only the length changes.
 
-Run from the repository root, after evaluate_length.py:
+If seeds.py has been run, each line is the mean over seeds and the shaded band runs from the
+lowest to the highest seed. Otherwise each line is the single chosen run.
+
+Run from the repository root, after evaluate_length.py (and again after seeds.py):
     python -m zoology.experiments.zoology_repro.plot
 """
 import textwrap
@@ -35,13 +38,26 @@ def select_runs(df: pd.DataFrame) -> pd.DataFrame:
     return runs.groupby("model").head(1)
 
 
+def plot_data(df: pd.DataFrame, selected: pd.DataFrame):
+    """Mean, lowest and highest accuracy per model and test length, over all seeds available."""
+    seed_file = RESULTS_DIR / "seed_length.csv"
+    if seed_file.exists():
+        runs = pd.read_csv(seed_file)
+    else:
+        runs = df[df.run_id.isin(selected.run_id)].assign(seed=0)
+    runs = runs[runs.kv_setting == "fixed_kv"]
+    num_seeds = int(runs.groupby("model").seed.nunique().min())
+    lines = runs.groupby(["model", "test_length"]).accuracy.agg(["mean", "min", "max"]).reset_index()
+    return lines.sort_values("test_length"), num_seeds
+
+
 def main():
     df = pd.read_csv(RESULTS_DIR / "length_generalization.csv")
     selected = select_runs(df)
     selected[["model", "d_model", "learning_rate", "valid_accuracy_at_train_length", "run_id"]].to_csv(
         RESULTS_DIR / "plotted_runs.csv", index=False
     )
-    lines = df[df.run_id.isin(selected.run_id) & (df.kv_setting == "fixed_kv")].sort_values("test_length")
+    lines, num_seeds = plot_data(df, selected)
     lengths = sorted(lines.test_length.unique())
 
     fig, ax = plt.subplots(figsize=(7.2, 4.6), dpi=200, facecolor=SURFACE)
@@ -51,9 +67,12 @@ def main():
         run = lines[lines.model == key]
         if run.empty:
             continue
-        ax.plot(run.test_length, run.accuracy, color=color, linewidth=2, marker=marker, markersize=7,
+        if num_seeds > 1:
+            ax.fill_between(run.test_length, run["min"], run["max"], color=color, alpha=0.15,
+                            linewidth=0, zorder=2)
+        ax.plot(run.test_length, run["mean"], color=color, linewidth=2, marker=marker, markersize=7,
                 markeredgecolor=SURFACE, markeredgewidth=1.2, label=label, clip_on=False, zorder=3)
-        end_labels.append([label, float(run.accuracy.iloc[-1])])
+        end_labels.append([label, float(run["mean"].iloc[-1])])
 
     # direct labels, spread apart when lines end close together
     end_labels.sort(key=lambda item: item[1], reverse=True)
@@ -72,7 +91,10 @@ def main():
     ax.set_xlabel("Test length (models trained at 64)", color=SECONDARY, fontsize=10)
     ax.set_ylabel("Recall accuracy", color=SECONDARY, fontsize=10)
     ax.set_title("Accuracy against test length, 4 key-value pairs, no retraining",
-                 loc="left", color=INK, fontsize=12, pad=12)
+                 loc="left", color=INK, fontsize=12, pad=30)
+    subtitle = (f"Line: mean of {num_seeds} seeds. Shaded: lowest to highest seed."
+                if num_seeds > 1 else "One seed per model.")
+    ax.text(0, 1.06, subtitle, transform=ax.transAxes, color=SECONDARY, fontsize=9)
     ax.grid(axis="y", color=GRID, linewidth=0.8)
     ax.set_axisbelow(True)
     ax.tick_params(colors=MUTED, length=0, labelsize=9)
